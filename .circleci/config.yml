@@ -48,9 +48,7 @@ workflows:
           requires:
             - test
           filters:
-            branches:
-              ignore:
-                - /.*/
             tags:
-              only:
-                - /prod-.*/
+              only: /prod-.*/
+            branches:
+              ignore: /.*/
