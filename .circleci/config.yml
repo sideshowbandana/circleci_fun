@@ -1,0 +1,56 @@
+# CircleCI Config:
+version: 2
+jobs:
+  test:
+    machine: true
+    steps:
+    - checkout
+    - run: echo "test"
+
+  deploy_feature:
+    machine: true
+    steps:
+      - checkout
+      - run: echo "deploy feature"
+
+  deploy_stage:
+    machine: true
+    steps:
+      - checkout
+      - run: echo "deploy stage"
+
+  deploy_prod:
+    machine: true
+    steps:
+      - checkout
+      - run: echo "deploy stage"
+
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - test
+      - deploy_feature:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - /^(bug|epic|feature)\/.*/
+      - deploy_stage:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+      - deploy_prod:
+          requires:
+            - test
+          filters:
+            branches:
+              ignore:
+                - /.*/
+            tags:
+              only:
+                - /prod-.*/
